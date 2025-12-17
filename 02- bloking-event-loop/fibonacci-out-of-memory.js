@@ -1,27 +1,24 @@
-const fs = require("fs");
-let isRunning = true;
 
-setTimeout(() => {
-  isRunning = false;
-  console.log("isRunning:false");
-}, 10);
+setTimeout(() => console.log("timeout"),0);
 
-process.nextTick(() => {
-  console.log("nextTick");
-});
-
-function setImmediatePromise() {
-    return new Promise ((resolve , reject) => {
-        setImmediate(() => resolve())
-    })
-}
-
-async function whileLoop() {
-    while(isRunning){
-        console.log("while loop is Running ...");
-        await setImmediatePromise()
+function fib(n) {
+    return new Promise((resolve, reject) => {
+         if(n === 0 || n === 1) {
+      return resolve(n)
     }
+
+    setImmediate(() => {
+
+          Promise.all([fib(n - 1) , fib(n - 2)])
+   .then(([fib1 , fib2]) => resolve(fib1 + fib2))
+   .catch(reject)
+    })
+    })
+ 
+   
 }
 
-whileLoop().then(() => console.log("while loop ended")
+//heap out of memory
+
+fib(10).then((res) => console.log(res)
 )
