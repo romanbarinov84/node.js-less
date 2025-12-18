@@ -1,5 +1,5 @@
+const exportedObject = require("./multiple-exports")
 
 
-
-console.log(require);
+console.log(exportedObject.myName);
 
